@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "241356565654",
+    "project_id": "myapp-50ceb",
+    "storage_bucket": "myapp-50ceb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241356565654:android:902099ce50e5aff7a226b7",
+        "android_client_info": {
+          "package_name": "com.example.calculator_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241356565654-lt0d6c62nhhn13utde8qvm0jlepp9odq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZsF1ayQd5Bih1NxW69ojybuAk6yFRs0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241356565654-lt0d6c62nhhn13utde8qvm0jlepp9odq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "241356565654-o85rijg8u0r7u2h5o6n94p37c36m3m9j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.calculatorApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
