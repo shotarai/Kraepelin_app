@@ -140,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class _start extends StatefulWidget{
-  const _start({super.key,required this.email0});
+  const _start({required this.email0});
   final String email0;
   @override
   State<_start> createState() => _startPageState(email1: email0);
@@ -167,9 +167,9 @@ class _startPageState extends State<_start> {
           ),
           onPressed: () async{
             await Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) {
-                  return MyHomePage(email2: email1,);
-                }),
+              MaterialPageRoute(builder: (context) {
+                return MyHomePage(email2: email1,);
+              }),
             );
           },
         ),
@@ -233,6 +233,30 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: [
                   Row(
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            ' ',
+                          ),
+                          Text(
+                            'No. ',style: TextStyle(
+                            color: Colors.indigoAccent,
+                            fontSize: 25,
+                          ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        num.toString(),
+                        style: TextStyle(
+                          color: Colors.indigoAccent,
+                          fontSize: 50,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
@@ -280,13 +304,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ],
                   ),
-                  Text(
-                    num.toString(),
-                    style: TextStyle(
-                      color: Colors.indigoAccent,
-                      fontSize: 50,
-                    ),
-                  )
                 ],
               ),
             ),
