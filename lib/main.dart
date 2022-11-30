@@ -199,7 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> lis = ['','','','','',''];
   List<String> ans = ['',''];
   int num = 0;
-  int max = 10;
+  int max = 100;
   double _accurate = 0;
   static final controller1 = PublishSubject<String>();
   static final controller2 = PublishSubject<String>();
