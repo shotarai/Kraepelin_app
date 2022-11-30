@@ -199,6 +199,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> lis = ['','','','','',''];
   List<String> ans = ['',''];
   int num = 0;
+  int max = 10;
   double _accurate = 0;
   static final controller1 = PublishSubject<String>();
   static final controller2 = PublishSubject<String>();
@@ -329,7 +330,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Timer.periodic(
         const Duration(seconds: 1),
             (Timer timer) {
-          if(num >= 10){
+          if(num >= max){
             timer.cancel();
             showDialog(
               context: context,
@@ -434,8 +435,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onPressed: (){
-            _MyHomePageState.controller2.sink.add(_key);
-            _MyHomePageState.controller1.sink.add(_key);
+            if(num <= max){
+              _MyHomePageState.controller2.sink.add(_key);
+              _MyHomePageState.controller1.sink.add(_key);
+            }else{
+              null;
+            }
           },
         )
     );
