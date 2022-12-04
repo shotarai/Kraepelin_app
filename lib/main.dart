@@ -198,9 +198,13 @@ class _MyHomePageState extends State<MyHomePage> {
   String rate = '';
   List<String> lis = ['','','','','',''];
   List<String> ans = ['',''];
-  int num = 0;
-  int max = 100;
-  double _accurate = 0;
+  List<String> change_score = [];
+  List<String> change_acc = [];
+  int num1 = 0;
+  int num2 = 0;
+  int max = 125;
+  int _accurate = 0;
+  int past_acc = 0;
   static final controller1 = PublishSubject<String>();
   static final controller2 = PublishSubject<String>();
   int time = 0;
@@ -249,7 +253,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                       Text(
-                        num.toString(),
+                        num1.toString(),
                         style: TextStyle(
                           color: Colors.indigoAccent,
                           fontSize: 50,
@@ -320,7 +324,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     setState(() {
       var random = math.Random();
-      if(num == 0) {
+      if(num1 == 0) {
         lis[0] = '*';
         lis[1] = '*';
         for (var i = 2; i < 6; i++) {
@@ -330,7 +334,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Timer.periodic(
         const Duration(seconds: 1),
             (Timer timer) {
-          if(num >= max){
+          if(time >= max){
             timer.cancel();
             showDialog(
               context: context,
@@ -344,8 +348,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Text("OK"),
                       onPressed: () async{
                         var index = await FirebaseFirestore.instance.collection('user').doc(email3).get();
-                        pre_map['time'] = time.toString();
+                        pre_map['answer'] = num1.toString();
                         pre_map['accurate'] = _accurate.toString();
+                        pre_map['change_ans'] = change_score.toString();
+                        pre_map['change_acc'] = change_acc.toString();
                         initializeDateFormatting('ja_JP');
                         var now = DateTime.now();
                         map['data'] = pre_map;
@@ -370,6 +376,12 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           }else{
             time++;
+            if(time % 60 == 0){
+              change_score.add((num1-num2).toString());
+              num2 = num1;
+              change_acc.add((_accurate - past_acc).toString());
+              past_acc = _accurate;
+            }
           }
         },
       );
@@ -387,7 +399,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
         ans[0] = ans[1];
         ans[1] = letter;
-        num++;
+        num1++;
       }
     });
   }
@@ -435,7 +447,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           onPressed: (){
-            if(num <= max){
+            if(time <= max){
               _MyHomePageState.controller2.sink.add(_key);
               _MyHomePageState.controller1.sink.add(_key);
             }else{
