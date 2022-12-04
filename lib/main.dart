@@ -202,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> change_acc = [];
   int num1 = 0;
   int num2 = 0;
-  int max = 125;
+  int max = 300;
   int _accurate = 0;
   int past_acc = 0;
   static final controller1 = PublishSubject<String>();
@@ -341,7 +341,18 @@ class _MyHomePageState extends State<MyHomePage> {
               barrierDismissible: false,
               builder: (_) {
                 return AlertDialog(
-                  title: Text("Complete!"),
+                  title: Column(
+                    children: [
+                      Text("Complete!"),
+                      Text(' '),
+                      Text(
+                        '解答数　' + num1.toString(),
+                      ),
+                      Text(
+                        '正解数　' + _accurate.toString(),
+                      ),
+                    ],
+                  ),
                   actions: <Widget>[
                     // ボタン領域
                     ElevatedButton(
