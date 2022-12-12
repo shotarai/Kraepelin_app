@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,8 @@ class _LoginPageState extends State<LoginPage> {
   // 入力したメールアドレス・パスワード
   String email = '';
   String password = '';
+  late String past_email;
+  late String past_pass;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               // メールアドレス入力
               TextFormField(
-                decoration: InputDecoration(labelText: 'メールアドレス'),
+                initialValue: past_email,
+                decoration: const InputDecoration(labelText: 'メールアドレス'),
                 onChanged: (String value) {
                   setState(() {
                     email = value;
@@ -60,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               // パスワード入力
               TextFormField(
-                decoration: InputDecoration(labelText: 'パスワード'),
+                initialValue: past_pass,
+                decoration: const InputDecoration(labelText: 'パスワード'),
                 obscureText: true,
                 onChanged: (String value) {
                   setState(() {
@@ -88,6 +93,8 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       // ユーザー登録に成功した場合
                       // チャット画面に遷移＋ログイン画面を破棄
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setStringList('my_string_list', [email, password]);
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
                           return _start(email0: email,);
@@ -117,6 +124,8 @@ class _LoginPageState extends State<LoginPage> {
                       );
                       // ログインに成功した場合
                       // チャット画面に遷移＋ログイン画面を破棄
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setStringList('my_string_list', [email, password]);
                       await Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: (context) {
                           return _start(email0: email,);
@@ -136,6 +145,24 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _getPrefItems() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      List<String> inf = prefs.getStringList('my_string_list') ?? ['',''];
+      email = inf[0];
+      password = inf[1];
+      past_email = inf[0];
+      past_pass = inf[1];
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 初期化時にShared Preferencesに保存している値を読み込む
+    _getPrefItems();
   }
 }
 
@@ -208,7 +235,6 @@ class _MyHomePageState extends State<MyHomePage> {
   static final controller1 = PublishSubject<String>();
   static final controller2 = PublishSubject<String>();
   int time = 0;
-  Map<String, dynamic> map = new Map();
   Map<String, dynamic> pre_map = new Map();
 
   void _incrementCounter(String letter) {
@@ -253,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ],
                       ),
                       Text(
-                        num1.toString(),
+                        (num1+1).toString(),
                         style: TextStyle(
                           color: Colors.indigoAccent,
                           fontSize: 50,
@@ -360,23 +386,24 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: () async{
                         var index = await FirebaseFirestore.instance.collection('user').doc(email3).get();
                         pre_map['answer'] = num1.toString();
-                        pre_map['accurate'] = _accurate.toString();
-                        pre_map['change_ans'] = change_score.toString();
-                        pre_map['change_acc'] = change_acc.toString();
+                        pre_map['correct'] = _accurate.toString();
+                        pre_map['0~1 ans'] = change_score[0].toString();
+                        pre_map['1~2 ans'] = change_score[1].toString();
+                        pre_map['2~3 ans'] = change_score[2].toString();
+                        pre_map['3~4 ans'] = change_score[3].toString();
+                        pre_map['4~5 ans'] = change_score[4].toString();
+                        pre_map['0~1 cor'] = change_acc[0].toString();
+                        pre_map['1~2 cor'] = change_acc[1].toString();
+                        pre_map['2~3 cor'] = change_acc[2].toString();
+                        pre_map['3~4 cor'] = change_acc[3].toString();
+                        pre_map['4~5 cor'] = change_acc[4].toString();
                         initializeDateFormatting('ja_JP');
                         var now = DateTime.now();
-                        map['data'] = pre_map;
                         if(index.exists){
-                          await FirebaseFirestore.instance.collection('user').doc(email3).update({now.toString().split(".")[0]: map});
+                          await FirebaseFirestore.instance.collection('user').doc(email3).update({now.toString().split(".")[0]: pre_map});
                         }else{
-                          await FirebaseFirestore.instance.collection('user').doc(email3).set({now.toString().split(".")[0]: map});
+                          await FirebaseFirestore.instance.collection('user').doc(email3).set({now.toString().split(".")[0]: pre_map});
                         }
-                        /*await Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) {
-                              return LoginPage();
-                            }),
-                              (_) => false
-                          );*/
                         int count = 0;
                         Navigator.popUntil(context, (_) => count++ >= 2);
                       },
