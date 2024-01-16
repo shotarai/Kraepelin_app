@@ -1,6 +1,6 @@
 # calculator_app
 
-A new Flutter project.
+クレペリン検査を行うためのモバイルアプリです。
 
 ## Getting Started
 
