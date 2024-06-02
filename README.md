@@ -1,6 +1,6 @@
 # calculator_app
 
-クレペリン検査を行うためのモバイルアプリです。
+This is an application for the Kraepelin test.
 
 ## Getting Started
 
